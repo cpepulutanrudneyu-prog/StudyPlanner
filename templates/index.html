@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Planner</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #f0f2f5; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .planner-card { 
+            max-width: 900px; 
+            margin: 50px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+            flex: 1;
+        }
+        .header-section {
+            border-bottom: 2px solid #f0f2f5;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+        .status-badge {
+            font-size: 0.85rem;
+            padding: 5px 12px;
+            border-radius: 50px;
+        }
+        /* Footer Styling */
+        footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            border-top: 1px solid #dee2e6;
+        }
+        .credits {
+            font-weight: 600;
+            color: #4e73df;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="planner-card">
+        
+        <div class="header-section text-center">
+            <h1 class="display-6 fw-bold text-primary">📝 Smart Study Planner</h1>
+            <p class="text-muted">Track your assignments and crush your deadlines.</p>
+        </div>
+
+        <!-- Assignment Input Form -->
+        <form action="/add" method="POST" class="row g-3 mb-5 p-4 bg-light rounded-3">
+            <div class="col-md-5">
+                <label class="form-label fw-bold">Assignment Name</label>
+                <input type="text" name="title" class="form-control" placeholder="e.g. Final Research Paper" required>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">Subject</label>
+                <input type="text" name="subject" class="form-control" placeholder="e.g. Computer Science">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">Deadline</label>
+                <input type="date" name="deadline" class="form-control" required>
+            </div>
+            <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2">Add to Tracker</button>
+            </div>
+        </form>
+
+        <!-- Table Section -->
+        <div class="table-responsive">
+            <h4 class="mb-3 fw-bold">Upcoming Deadlines</h4>
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th scope="col">Task</th>
+                        <th scope="col">Subject</th>
+                        <th scope="col">Deadline</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in assignments %}
+                    <tr>
+                        <td><div class="fw-bold text-dark">{{ task.title }}</div></td>
+                        <td><span class="badge bg-light text-primary border border-primary-subtle">{{ task.subject }}</span></td>
+                        <td class="text-muted">📅 {{ task.deadline }}</td>
+                        <td><span class="status-badge bg-warning-subtle text-warning-emphasis">⏳ {{ task.status }}</span></td>
+                        <td class="text-center">
+                            <a href="{{ url_for('delete_task', task_index=loop.index0) }}" 
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Done with this assignment?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">No pending assignments.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Credentials and Copyright Footer -->
+        <footer>
+            <p class="mb-1">Developed by <span class="credits">Rudney, Jefrey, Elaiza, Akisha </span></p>
+            <p class="mb-0">&copy; 2026 Smart Study Planner. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
